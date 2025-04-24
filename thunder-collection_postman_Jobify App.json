@@ -1,0 +1,210 @@
+{
+    "info": {
+        "_postman_id": "4385715d-f858-4a1d-be21-8588c53ce05f",
+        "name": "Jobify App",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "Get All Jobs",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:5100/api/v1/jobs",
+                    "path": [
+                        "api",
+                        "v1",
+                        "jobs"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5100"
+                },
+                "header": [
+                    {
+                        "key": "token",
+                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzc3YmJhMWNiM2M1NjY0NTdjMzBiYWEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MzU5MDAwNjksImV4cCI6MTczNTk4NjQ2OX0.tyPyfOF9ozhmJGKhPzwLt6QPxzt_f_IMAtaOsc-58cg"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Create Job",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:5100/api/v1/jobs",
+                    "path": [
+                        "api",
+                        "v1",
+                        "jobs"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5100"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"company\":\"faceboook\",\n  \"position\":\"DevOps\",\n  \"jobLocation\":\"Thirthahalli\",\n  \"jobStatus\":\"interview\",\n  \"jobType\":\"part-time\"\n  \n}"
+                }
+            }
+        },
+        {
+            "name": "Get job by id",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:5100/api/v1/jobs/67776832aa5aad022e14509e",
+                    "path": [
+                        "api",
+                        "v1",
+                        "jobs",
+                        "67776832aa5aad022e14509e"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5100"
+                }
+            }
+        },
+        {
+            "name": "Edit Job",
+            "request": {
+                "method": "PUT",
+                "url": {
+                    "raw": "http://localhost:5100/api/v1/jobs/67776832aa5aad022e14509e",
+                    "path": [
+                        "api",
+                        "v1",
+                        "jobs",
+                        "67776832aa5aad022e14509e"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5100"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"company\":\"faceboook\",\n  \"position\":\"DevOps\",\n  \"jobLocation\":\"remote\",\n  \"jobStatus\":\"interview\",\n  \"jobType\":\"part-time\"\n  \n}"
+                }
+            }
+        },
+        {
+            "name": "Delete job",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "http://localhost:5100/api/v1/jobs/67776832aa5aad022e14509e",
+                    "path": [
+                        "api",
+                        "v1",
+                        "jobs",
+                        "67776832aa5aad022e14509e"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5100"
+                }
+            }
+        },
+        {
+            "name": "Get single job",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:5100/api/v1/jobs/67776832aa5aad022e14509e",
+                    "path": [
+                        "api",
+                        "v1",
+                        "jobs",
+                        "67776832aa5aad022e14509e"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5100"
+                }
+            }
+        },
+        {
+            "name": "Register User",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:5100/api/v1/auth/register",
+                    "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "register"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5100"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\r\n  \"name\": \"john\",\r\n  \"email\": \"peter@gmail.com\",\r\n  \"password\": \"pass123\",\r\n  \"lastName\": \"smith\",\r\n  \"location\": \"my city\"\r\n}"
+                }
+            }
+        },
+        {
+            "name": "Login User",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:5100/api/v1/auth/login",
+                    "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "login"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5100"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"email\":\"peter@gmail.com\",\n  \"password\":\"pass123\"\n}"
+                }
+            }
+        }
+    ]
+}

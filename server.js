@@ -5,6 +5,8 @@ import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import { v2 as cloudinary } from 'cloudinary';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
 
 // Routes
 import jobRouter from './router/jobRouter.js'; // Import the jobRouter
@@ -38,6 +40,8 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.static(path.resolve(__dirname, './client/dist')));
 app.use(cookieParser());
 app.use(express.json());
+app.use(helmet());
+app.use(mongoSanitize());
 
 app.get('/api/v1/test', (req, res) => {
   res.status(200).json({ message: 'Hello from Express!' });

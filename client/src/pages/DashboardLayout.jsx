@@ -1,16 +1,30 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 
-import { Outlet, redirect, useLoaderData, useNavigate } from 'react-router-dom';
+import {
+  Outlet,
+  redirect,
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+} from 'react-router-dom';
 import Wrapper from '../assets/wrappers/Dashboard';
-import { BigSidebar, Navbar, SmallSidebar } from '../components';
+import { BigSidebar, Loading, Navbar, SmallSidebar } from '../components';
 import { checkDefaultTheme } from '../App';
 import customFetch from '../../../utils/customFetch.js';
 import { toast } from 'react-toastify';
+import { useQuery } from '@tanstack/react-query';
 
-export const loader = async () => {
-  try {
+const userQuery = {
+  queryKey: ['user'],
+  queryFn: async () => {
     const { data } = await customFetch.get('/users/current-user');
     return data;
+  },
+};
+
+export const loader = (queryClient) => async () => {
+  try {
+    return await queryClient.ensureQueryData(userQuery);
   } catch (error) {
     return redirect('/');
   }
@@ -18,14 +32,19 @@ export const loader = async () => {
 
 const DashboardContext = createContext();
 
-const DashboardLayout = () => {
-  const { user } = useLoaderData();
+const DashboardLayout = ({ queryClient }) => {
+  // const { user } = useLoaderData();
+  const { user } = useQuery(userQuery).data;
   // temp change
 
   const [showSidebar, setShowSidebar] = useState(true);
   const [isDarkTheme, setIsDarkTheme] = useState(checkDefaultTheme());
-
+  const [isAuthError, setIsAuthError] = useState(false);
   const navigate = useNavigate();
+  const navigation = useNavigation();
+
+  const isPageLoading = navigation.state === 'loading';
+
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
@@ -40,8 +59,26 @@ const DashboardLayout = () => {
   const logoutUser = async () => {
     navigate('/');
     await customFetch.get('/auth/logout');
+    queryClient.invalidateQueries();
     toast.success('Logged out successfully!');
   };
+
+  customFetch.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      if (error?.response?.status === 401) {
+        setIsAuthError(true);
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  useEffect(() => {
+    if (!isAuthError) return;
+    logoutUser();
+  }, [isAuthError, logoutUser]);
   return (
     <DashboardContext.Provider
       value={{
@@ -60,7 +97,7 @@ const DashboardLayout = () => {
           <div>
             <Navbar />
             <div className="dashboard-page">
-              <Outlet context={{ user }} />
+              {isPageLoading ? <Loading /> : <Outlet context={{ user }} />}
             </div>
           </div>
         </main>

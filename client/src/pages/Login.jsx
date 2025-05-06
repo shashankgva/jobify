@@ -10,27 +10,28 @@ import { FormRow, Logo, SubmitBtn } from '../components';
 import customFetch from '../../../utils/customFetch.js';
 import { toast } from 'react-toastify';
 
-export const action = async ({ request }) => {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
+export const action =
+  (queryClient) =>
+  async ({ request }) => {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
 
-  const errors = { msg: '' };
-  if (data.password.length < 6) {
-    errors.msg = 'Password must be at least 6 characters long';
-    return errors;
-  }
-  try {
-    await customFetch.post('/auth/login', data);
-    toast.success('Login successful!');
-    return redirect('/dashboard');
-  } catch (error) {
-    console.log(`error>>>`, error);
-    toast.error(
-      error?.response?.data?.error || 'An error occurred. Please try again.'
-    );
-    return error;
-  }
-};
+    const errors = { msg: '' };
+    if (data.password.length < 6) {
+      errors.msg = 'Password must be at least 6 characters long';
+      return errors;
+    }
+    try {
+      await customFetch.post('/auth/login', data);
+      queryClient.invalidateQueries();
+      toast.success('Login successful!');
+      return redirect('/dashboard');
+    } catch (error) {
+      console.log(`error>>>`, error);
+      toast.error(error?.msg || 'An error occurred. Please try again.');
+      return error;
+    }
+  };
 
 const Login = () => {
   const navigate = useNavigate();
